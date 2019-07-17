@@ -7,6 +7,11 @@ use std::io::Write;
 pub fn add() {
     print!("enter task: ");
 
+    match io::stdout().flush() {
+        Ok(_) => (),
+        Err(err) => eprintln!("error flushing stdout: {}", err.description()),
+    }
+
     let mut input = String::new();
 
     match io::stdin().read_line(&mut input) {
