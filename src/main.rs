@@ -16,7 +16,7 @@ fn main() {
         .subcommand(
             SubCommand::with_name("add")
                 .about("add a task to todo list")
-                .arg(Arg::with_name("task")),
+                .arg(Arg::with_name("task").value_name("TASK").required(true)),
         )
         .subcommand(SubCommand::with_name("list").about("list all tasks in todo list"))
         .get_matches();
