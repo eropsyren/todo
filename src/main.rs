@@ -1,3 +1,5 @@
+mod add;
+mod constants;
 mod init;
 
 use clap::{App, Arg, SubCommand};
@@ -7,9 +9,14 @@ fn main() {
         .version(clap::crate_version!())
         .author(clap::crate_authors!())
         .subcommand(SubCommand::with_name("init"))
+        .subcommand(SubCommand::with_name("add"))
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("init") {
         init::init();
+    }
+
+    if let Some(_) = matches.subcommand_matches("add") {
+        add::add();
     }
 }
