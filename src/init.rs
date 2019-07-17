@@ -1,8 +1,7 @@
+use crate::constants::TODO_FILE_NAME;
 use std::error::Error;
 use std::fs::File;
 use std::path::Path;
-
-const TODO_FILE_NAME: &'static str = ".todo";
 
 pub fn init() {
     let already_exists = Path::new(TODO_FILE_NAME).exists();
