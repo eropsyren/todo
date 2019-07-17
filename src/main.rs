@@ -2,6 +2,7 @@ mod add;
 mod constants;
 mod init;
 mod list;
+mod utils;
 
 use clap::{App, Arg, SubCommand};
 
@@ -17,14 +18,14 @@ fn main() {
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("init") {
-        init::init();
+        utils::if_todo_not_exists(init::init);
     }
 
     if let Some(_) = matches.subcommand_matches("add") {
-        add::add();
+        utils::if_todo_exists(add::add);
     }
 
     if let Some(_) = matches.subcommand_matches("list") {
-        list::list();
+        utils::if_todo_exists(list::list);
     }
 }
