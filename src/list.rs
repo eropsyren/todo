@@ -1,6 +1,7 @@
 use crate::constants::TODO_FILE_NAME;
 use std::error::Error;
 use std::fs;
+use colored::Colorize;
 
 pub fn list() {
     let content = fs::read_to_string(TODO_FILE_NAME);
@@ -8,7 +9,8 @@ pub fn list() {
     match content {
         Ok(content) => {
             for (idx, line) in content.lines().enumerate() {
-                println!("[{}] {}", idx, line);
+                let idx = format!("[{}]", idx);
+                println!("{} {}", idx.cyan(), line.yellow());
             }
         }
         Err(err) => eprintln!(
