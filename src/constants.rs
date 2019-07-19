@@ -1,1 +1,1 @@
-pub const TODO_FILE_NAME: &'static str = ".todo";
+pub const TODO_FILE_NAME: &'static str = ".todo.json";

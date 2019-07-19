@@ -1,12 +1,17 @@
 use crate::constants::TODO_FILE_NAME;
 use std::error::Error;
 use std::fs::File;
+use std::io::Write;
+use json;
 
 pub fn init() {
-    let f = File::create(TODO_FILE_NAME);
+    let file = File::create(TODO_FILE_NAME);
 
-    match f {
-        Ok(_) => (),
-        Err(error) => eprintln!("error generating .todo file: {}", error.description()),
+    match file {
+        Ok(mut file) => match file.write_all(json::object!{}.dump().as_bytes()) {
+            Ok(_) => (),
+            Err(err) => eprintln!("error writing to .todo file: {}", err.description()), 
+        },
+        Err(err) => eprintln!("error generating .todo file: {}", err.description()),
     }
 }
