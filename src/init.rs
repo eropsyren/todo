@@ -8,7 +8,7 @@ pub fn init() {
     let file = File::create(TODO_FILE_NAME);
 
     match file {
-        Ok(mut file) => match file.write_all(json::object!{}.dump().as_bytes()) {
+        Ok(mut file) => match file.write_all(json::array![].dump().as_bytes()) {
             Ok(_) => (),
             Err(err) => eprintln!("error writing to .todo file: {}", err.description()), 
         },
