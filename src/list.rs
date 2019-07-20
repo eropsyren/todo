@@ -1,7 +1,7 @@
 use crate::constants::TODO_FILE_NAME;
+use colored::Colorize;
 use std::error::Error;
 use std::fs;
-use colored::Colorize;
 
 pub fn list() {
     let content = fs::read_to_string(TODO_FILE_NAME);
