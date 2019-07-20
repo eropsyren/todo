@@ -8,6 +8,12 @@ pub struct Task {
     msg: String,
 }
 
+impl Task {
+    pub fn new(msg: String) -> Self {
+        Task { msg }
+    }
+}
+
 impl TryFrom<Object> for Task {
     type Error = ParseError;
 
