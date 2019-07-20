@@ -31,7 +31,7 @@ pub fn add(task: &str) {
         }
     };
 
-    let new_task = json::object!{
+    let new_task = json::object! {
         "msg" => task,
     };
 
