@@ -13,6 +13,10 @@ impl Task {
     pub fn new(msg: String) -> Self {
         Task { msg }
     }
+
+    pub fn msg(&self) -> &str {
+        &self.msg
+    }
 }
 
 impl TryFrom<JsonValue> for Task {
