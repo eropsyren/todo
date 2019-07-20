@@ -47,9 +47,9 @@ impl fmt::Display for TaskError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             TaskError::MissingProperty(prop_name) => {
-                write!(f, "error: missing property name {}", prop_name)
+                write!(f, "missing property name {}", prop_name)
             }
-            TaskError::NotAnObject => write!(f, "error: not a json object"),
+            TaskError::NotAnObject => write!(f, "not a json object"),
         }
     }
 }
