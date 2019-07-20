@@ -2,6 +2,7 @@ mod add;
 mod constants;
 mod init;
 mod list;
+mod task;
 mod utils;
 
 use clap::{App, Arg, SubCommand};
