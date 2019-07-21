@@ -1,22 +1,13 @@
 use crate::constants::{DONE, ID, MESSAGE, TODO_FILE_NAME};
+use crate::utils;
 use colored::Colorize;
 use json::{self, JsonValue};
-use std::fs;
 
 pub fn list() {
-    let file = match fs::read_to_string(TODO_FILE_NAME) {
-        Ok(file) => file,
-        Err(err) => {
-            print_error!("error reading file {}: {}", TODO_FILE_NAME, err);
-
-            return;
-        }
-    };
-
-    let tasks = match json::parse(&file) {
+    let tasks = match utils::read_file_to_json(TODO_FILE_NAME) {
         Ok(json) => json,
         Err(err) => {
-            print_error!("error parsing file {} as json: {}", TODO_FILE_NAME, err);
+            print_error!("error reading {} file into json: {}", TODO_FILE_NAME, err);
 
             return;
         }
