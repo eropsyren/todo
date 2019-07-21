@@ -32,6 +32,9 @@ pub fn list() {
     };
 
     for task in tasks {
-        println!("{}", task["msg"].to_string().yellow());
+        let id = format!("[{}]", task["id"]);
+        let msg = task["msg"].to_string();
+
+        println!("{} {}", id.cyan(), msg.yellow());
     }
 }
