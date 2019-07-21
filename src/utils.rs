@@ -9,6 +9,19 @@ macro_rules! print_error {
     }
 }
 
+macro_rules! get_json_from_todo_or_return {
+    () => {
+        match crate::utils::read_file_to_json(crate::constants::TODO_FILE_NAME) {
+            Ok(json) => json,
+            Err(err) => {
+                print_error!("error reading {} file into json: {}", crate::constants::TODO_FILE_NAME, err);
+
+                return;
+            }
+        };
+    };
+}
+
 pub fn if_todo_exists(f: impl FnOnce() -> ()) {
     let exists = Path::new(TODO_FILE_NAME).exists();
 
