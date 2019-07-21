@@ -1,19 +1,11 @@
 use crate::constants::{DONE, ID, MESSAGE, TODO_FILE_NAME};
-use crate::utils;
 use json::{self, JsonValue};
 use std::collections::hash_map::DefaultHasher;
 use std::fs::File;
 use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
-    let tasks = match utils::read_file_to_json(TODO_FILE_NAME) {
-        Ok(json) => json,
-        Err(err) => {
-            print_error!("error reading {} file into json: {}", TODO_FILE_NAME, err);
-
-            return;
-        }
-    };
+    let tasks = get_json_from_todo_or_return!();
 
     let mut tasks = match tasks {
         JsonValue::Array(_) => tasks,

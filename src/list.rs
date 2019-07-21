@@ -1,17 +1,9 @@
 use crate::constants::{DONE, ID, MESSAGE, TODO_FILE_NAME};
-use crate::utils;
 use colored::Colorize;
 use json::{self, JsonValue};
 
 pub fn list() {
-    let tasks = match utils::read_file_to_json(TODO_FILE_NAME) {
-        Ok(json) => json,
-        Err(err) => {
-            print_error!("error reading {} file into json: {}", TODO_FILE_NAME, err);
-
-            return;
-        }
-    };
+    let tasks = get_json_from_todo_or_return!();
 
     let tasks = match tasks {
         JsonValue::Array(tasks) => tasks,
