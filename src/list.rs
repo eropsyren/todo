@@ -1,4 +1,4 @@
-use crate::constants::{TODO_FILE_NAME, MESSAGE, ID};
+use crate::constants::{DONE, ID, MESSAGE, TODO_FILE_NAME};
 use colored::Colorize;
 use json::{self, JsonValue};
 use std::fs;
@@ -32,9 +32,22 @@ pub fn list() {
     };
 
     for task in tasks {
-        let id = format!("[{}]", task[ID]);
+        let id = format!("[{}]", task[ID]).cyan();
         let msg = task[MESSAGE].to_string();
+        let msg = match task[DONE] {
+            JsonValue::Boolean(done) => {
+                if done {
+                    msg.green()
+                } else {
+                    msg.yellow()
+                }
+            }
+            _ => {
+                print_error!("error: {} property is not a boolean", DONE);
+                return;
+            }
+        };
 
-        println!("{} {}", id.cyan(), msg.yellow());
+        println!("{} {}", id, msg);
     }
 }
