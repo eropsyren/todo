@@ -1,6 +1,5 @@
 use crate::constants::TODO_FILE_NAME;
 use json;
-use std::error::Error;
 use std::fs::File;
 
 pub fn init() {
@@ -9,8 +8,8 @@ pub fn init() {
     match file {
         Ok(mut file) => match json::array![].write(&mut file) {
             Ok(_) => (),
-            Err(err) => eprintln!("error writing to .todo file: {}", err.description()),
+            Err(err) => eprintln!("error writing to .todo file: {}", err),
         },
-        Err(err) => eprintln!("error generating .todo file: {}", err.description()),
+        Err(err) => eprintln!("error generating .todo file: {}", err),
     }
 }
