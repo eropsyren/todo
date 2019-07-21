@@ -8,8 +8,8 @@ pub fn init() {
     match file {
         Ok(mut file) => match json::array![].write(&mut file) {
             Ok(_) => (),
-            Err(err) => eprintln!("error writing to .todo file: {}", err),
+            Err(err) => print_error!("error writing to .todo file: {}", err),
         },
-        Err(err) => eprintln!("error generating .todo file: {}", err),
+        Err(err) => print_error!("error generating .todo file: {}", err),
     }
 }

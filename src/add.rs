@@ -7,7 +7,7 @@ pub fn add(task: &str) {
     let file = match fs::read_to_string(TODO_FILE_NAME) {
         Ok(file) => file,
         Err(err) => {
-            eprintln!("error reading file {}: {}", TODO_FILE_NAME, err);
+            print_error!("error reading file {}: {}", TODO_FILE_NAME, err);
 
             return;
         }
@@ -16,7 +16,7 @@ pub fn add(task: &str) {
     let tasks = match json::parse(&file) {
         Ok(json) => json,
         Err(err) => {
-            eprintln!("error parsing file {} as json: {}", TODO_FILE_NAME, err);
+            print_error!("error parsing file {} as json: {}", TODO_FILE_NAME, err);
 
             return;
         }
@@ -25,7 +25,7 @@ pub fn add(task: &str) {
     let mut tasks = match tasks {
         JsonValue::Array(_) => tasks,
         _ => {
-            eprintln!("file {} is not a json array", TODO_FILE_NAME);
+            print_error!("file {} is not a json array", TODO_FILE_NAME);
 
             return;
         }
@@ -38,7 +38,7 @@ pub fn add(task: &str) {
     match tasks.push(new_task) {
         Ok(_) => (),
         Err(err) => {
-            eprintln!("error pushing to json array: {}", err);
+            print_error!("error pushing to json array: {}", err);
 
             return;
         }
@@ -47,8 +47,8 @@ pub fn add(task: &str) {
     match File::create(TODO_FILE_NAME) {
         Ok(mut file) => match tasks.write(&mut file) {
             Ok(_) => (),
-            Err(err) => eprintln!("error writing to {}: {}", TODO_FILE_NAME, err),
+            Err(err) => print_error!("error writing to {}: {}", TODO_FILE_NAME, err),
         },
-        Err(err) => eprintln!("error rewriting {}: {}", TODO_FILE_NAME, err),
+        Err(err) => print_error!("error rewriting {}: {}", TODO_FILE_NAME, err),
     }
 }
