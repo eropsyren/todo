@@ -1,7 +1,7 @@
 use crate::constants::TODO_FILE_NAME;
-use std::path::Path;
-use std::fs;
 use json::JsonValue;
+use std::fs;
+use std::path::Path;
 
 macro_rules! print_error {
     ($($arg:tt)*) => {
@@ -32,16 +32,12 @@ pub fn if_todo_not_exists(f: impl FnOnce() -> ()) {
 pub fn read_file_to_json<P: AsRef<Path>>(path: P) -> Result<JsonValue, String> {
     let file = match fs::read_to_string(path) {
         Ok(file) => file,
-        Err(err) => {
-            return Err(format!("{}", err))
-        }
+        Err(err) => return Err(format!("{}", err)),
     };
 
     let json = match json::parse(&file) {
         Ok(json) => json,
-        Err(err) => {
-            return Err(format!("{}", err))
-        }
+        Err(err) => return Err(format!("{}", err)),
     };
 
     Ok(json)
