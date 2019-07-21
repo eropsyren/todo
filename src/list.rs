@@ -1,4 +1,4 @@
-use crate::constants::{TODO_FILE_NAME, MSG, ID};
+use crate::constants::{TODO_FILE_NAME, MESSAGE, ID};
 use colored::Colorize;
 use json::{self, JsonValue};
 use std::fs;
@@ -33,7 +33,7 @@ pub fn list() {
 
     for task in tasks {
         let id = format!("[{}]", task[ID]);
-        let msg = task[MSG].to_string();
+        let msg = task[MESSAGE].to_string();
 
         println!("{} {}", id.cyan(), msg.yellow());
     }
