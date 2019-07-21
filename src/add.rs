@@ -2,6 +2,8 @@ use crate::constants::TODO_FILE_NAME;
 use json::{self, JsonValue};
 use std::fs;
 use std::fs::File;
+use std::collections::hash_map::DefaultHasher;
+use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
     let file = match fs::read_to_string(TODO_FILE_NAME) {
@@ -32,6 +34,7 @@ pub fn add(task: &str) {
     };
 
     let new_task = json::object! {
+        "id" => hash(task),
         "msg" => task,
     };
 
@@ -51,4 +54,11 @@ pub fn add(task: &str) {
         },
         Err(err) => print_error!("error rewriting {}: {}", TODO_FILE_NAME, err),
     }
+}
+
+fn hash(string: &str) -> u64 {
+    let mut s = DefaultHasher::new();
+    
+    string.hash(&mut s);
+    s.finish()
 }
