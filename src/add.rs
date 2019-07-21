@@ -1,4 +1,4 @@
-use crate::constants::TODO_FILE_NAME;
+use crate::constants::{TODO_FILE_NAME, MESSAGE, ID};
 use json::{self, JsonValue};
 use std::collections::hash_map::DefaultHasher;
 use std::fs;
@@ -34,8 +34,8 @@ pub fn add(task: &str) {
     };
 
     let new_task = json::object! {
-        "id" => hash(task),
-        "msg" => task,
+        ID => hash(task),
+        MESSAGE => task,
     };
 
     match tasks.push(new_task) {
