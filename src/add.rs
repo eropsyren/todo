@@ -1,8 +1,8 @@
 use crate::constants::TODO_FILE_NAME;
 use json::{self, JsonValue};
+use std::collections::hash_map::DefaultHasher;
 use std::fs;
 use std::fs::File;
-use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
@@ -58,7 +58,7 @@ pub fn add(task: &str) {
 
 fn hash(string: &str) -> u64 {
     let mut s = DefaultHasher::new();
-    
+
     string.hash(&mut s);
     s.finish()
 }
