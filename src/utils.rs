@@ -29,18 +29,18 @@ pub fn if_todo_not_exists(f: impl FnOnce() -> ()) {
     }
 }
 
-pub fn read_file_to_json() -> Result<JsonValue, String> {
-    let file = match fs::read_to_string(TODO_FILE_NAME) {
+pub fn read_file_to_json<P: AsRef<Path>>(path: P) -> Result<JsonValue, String> {
+    let file = match fs::read_to_string(path) {
         Ok(file) => file,
         Err(err) => {
-            return Err(format!("error reading file {}: {}", TODO_FILE_NAME, err))
+            return Err(format!("{}", err))
         }
     };
 
     let json = match json::parse(&file) {
         Ok(json) => json,
         Err(err) => {
-            return Err(format!("error parsing file {} as json: {}", TODO_FILE_NAME, err))
+            return Err(format!("{}", err))
         }
     };
 
