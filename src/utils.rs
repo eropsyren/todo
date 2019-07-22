@@ -35,6 +35,19 @@ macro_rules! validate_json_or_return {
     };
 }
 
+macro_rules! validate_json_get_vec_or_return {
+    ($json:expr, $path:expr) => {
+        match $json {
+            json::JsonValue::Array(vec) => vec,
+            _ => {
+                print_error!("error: file {} is not a json array", $path);
+
+                return;
+            }
+        }
+    };
+}
+
 pub fn if_todo_exists(f: impl FnOnce() -> ()) {
     let exists = Path::new(TODO_FILE_NAME).exists();
 
