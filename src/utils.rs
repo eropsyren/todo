@@ -25,22 +25,9 @@ macro_rules! get_json_from_file_or_return {
 macro_rules! validate_json_or_return {
     ($json:expr, $path:expr) => {
         match $json {
-            json::JsonValue::Array(_) => $json,
+            json::JsonValue::Object(_) => $json,
             _ => {
-                print_error!("error: file {} is not a json array", $path);
-
-                return;
-            }
-        }
-    };
-}
-
-macro_rules! validate_json_get_vec_or_return {
-    ($json:expr, $path:expr) => {
-        match $json {
-            json::JsonValue::Array(vec) => vec,
-            _ => {
-                print_error!("error: file {} is not a json array", $path);
+                print_error!("error: file {} is not a json object", $path);
 
                 return;
             }

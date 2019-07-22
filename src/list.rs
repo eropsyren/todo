@@ -1,13 +1,13 @@
-use crate::constants::{DONE, ID, MESSAGE, TODO_FILE_NAME};
+use crate::constants::{DONE, MESSAGE, TODO_FILE_NAME};
 use colored::Colorize;
 use json::{self, JsonValue};
 
 pub fn list() {
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
-    let tasks = validate_json_get_vec_or_return!(tasks, TODO_FILE_NAME);
+    let tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
 
-    for task in tasks {
-        let id = format!("[{}]", task[ID]).cyan();
+    for (id, task) in tasks.entries() {
+        let id = format!("[{}]", id).cyan();
         let msg = task[MESSAGE].to_string();
         let msg = match task[DONE] {
             JsonValue::Boolean(done) => {

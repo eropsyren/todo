@@ -6,7 +6,7 @@ pub fn init() {
     let file = File::create(TODO_FILE_NAME);
 
     match file {
-        Ok(mut file) => match json::array![].write(&mut file) {
+        Ok(mut file) => match json::object![].write(&mut file) {
             Ok(_) => (),
             Err(err) => print_error!("error writing to .todo file: {}", err),
         },

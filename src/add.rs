@@ -1,4 +1,4 @@
-use crate::constants::{DONE, ID, MESSAGE, TODO_FILE_NAME};
+use crate::constants::{DONE, MESSAGE, TODO_FILE_NAME};
 use json;
 use std::collections::hash_map::DefaultHasher;
 use std::fs::File;
@@ -8,20 +8,10 @@ pub fn add(task: &str) {
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
     let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
 
-    let new_task = json::object! {
-        ID => hash(task),
+    tasks[hash(task)] = json::object! {
         MESSAGE => task,
         DONE => false,
     };
-
-    match tasks.push(new_task) {
-        Ok(_) => (),
-        Err(err) => {
-            print_error!("error pushing to json array: {}", err);
-
-            return;
-        }
-    }
 
     match File::create(TODO_FILE_NAME) {
         Ok(mut file) => match tasks.write(&mut file) {
@@ -32,9 +22,9 @@ pub fn add(task: &str) {
     }
 }
 
-fn hash(string: &str) -> u64 {
+fn hash(string: &str) -> String {
     let mut s = DefaultHasher::new();
 
     string.hash(&mut s);
-    s.finish()
+    s.finish().to_string()
 }
