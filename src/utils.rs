@@ -5,7 +5,7 @@ use std::path::Path;
 
 macro_rules! print_error {
     ($($arg:tt)*) => {
-        eprintln!("{}", colored::Colorize::red(std::fmt::format(format_args!($($arg)*)).as_str()));
+        eprintln!("{}", colored::Colorize::bold(colored::Colorize::red(std::fmt::format(format_args!($($arg)*)).as_str())));
     }
 }
 
