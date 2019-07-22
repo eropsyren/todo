@@ -14,22 +14,22 @@ fn main() {
         .version(clap::crate_version!())
         .author(clap::crate_authors!())
         .subcommand(
-            SubCommand::with_name("init").about("initialize todo list in the current directory"),
+            SubCommand::with_name("init").about("Initializes todo list in the current directory"),
         )
         .subcommand(
             SubCommand::with_name("add")
-                .about("add a task to todo list")
+                .about("Adds a task to todo list")
                 .arg(Arg::with_name("task").value_name("TASK").required(true)),
         )
-        .subcommand(SubCommand::with_name("list").about("list all tasks in todo list"))
+        .subcommand(SubCommand::with_name("list").about("Lists all tasks in todo list"))
         .subcommand(
             SubCommand::with_name("done")
-                .about("mark a task as done")
+                .about("Marks a task as done")
                 .arg(Arg::with_name("id").value_name("ID").required(true)),
         )
         .subcommand(
             SubCommand::with_name("discard")
-                .about("mark a task as discarded")
+                .about("Marks a task as discarded")
                 .arg(Arg::with_name("id").value_name("ID").required(true)),
         )
         .get_matches();
