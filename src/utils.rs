@@ -15,7 +15,7 @@ macro_rules! get_json_from_file_or_return {
             Ok(json) => json,
             Err(err) => {
                 print_error!("error reading {} file into json: {}", $path, err);
-
+                
                 return;
             }
         };
@@ -28,7 +28,7 @@ macro_rules! validate_json_or_return {
             json::JsonValue::Object(_) => $json,
             _ => {
                 print_error!("error: file {} is not a json object", $path);
-
+               
                 return;
             }
         }

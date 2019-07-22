@@ -19,7 +19,7 @@ pub fn list() {
             }
             _ => {
                 print_error!("error: property {} is not a json string", STATUS);
-
+                
                 return;
             }
         };
@@ -30,7 +30,7 @@ pub fn list() {
             DISCARDED => msg.red(),
             status => {
                 print_error!("error: {} is an indvalid status", status);
-
+                
                 return;
             }
         };
