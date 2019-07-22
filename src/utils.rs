@@ -35,6 +35,18 @@ macro_rules! validate_json_or_return {
     };
 }
 
+macro_rules! write_json_to_file_or_err {
+    ($json:expr, $path:expr) => {
+        match std::fs::File::create($path) {
+            Ok(mut file) => match $json.write(&mut file) {
+                Ok(_) => (),
+                Err(err) => print_error!("error writing to {}: {}", $path, err),
+            },
+            Err(err) => print_error!("error rewriting {}: {}", $path, err),
+        }
+    };
+}
+
 pub fn if_todo_exists(f: impl FnOnce() -> ()) {
     let exists = Path::new(TODO_FILE_NAME).exists();
 

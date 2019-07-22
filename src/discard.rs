@@ -1,7 +1,7 @@
-use crate::constants::{DONE, STATUS, TODO_FILE_NAME};
+use crate::constants::{DISCARDED, STATUS, TODO_FILE_NAME};
 use json::JsonValue;
 
-pub fn done(id: &str) {
+pub fn discard(id: &str) {
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
     let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
 
@@ -10,7 +10,7 @@ pub fn done(id: &str) {
             print_error!("error: no task with {} id", id);
             return;
         }
-        task => task[STATUS] = JsonValue::String(String::from(DONE)),
+        task => task[STATUS] = JsonValue::String(String::from(DISCARDED)),
     }
 
     write_json_to_file_or_err!(tasks, TODO_FILE_NAME);

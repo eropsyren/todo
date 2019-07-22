@@ -2,6 +2,7 @@
 mod utils;
 mod add;
 mod constants;
+mod discard;
 mod done;
 mod init;
 mod list;
@@ -26,6 +27,11 @@ fn main() {
                 .about("mark a task as done")
                 .arg(Arg::with_name("id").value_name("ID").required(true)),
         )
+        .subcommand(
+            SubCommand::with_name("discard")
+                .about("mark a task as discarded")
+                .arg(Arg::with_name("id").value_name("ID").required(true)),
+        )
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("init") {
@@ -47,6 +53,14 @@ fn main() {
     if let Some(matches) = matches.subcommand_matches("done") {
         if let Some(id) = matches.value_of("id") {
             let f = |id| move || done::done(id);
+
+            utils::if_todo_exists(f(id));
+        }
+    }
+
+    if let Some(matches) = matches.subcommand_matches("discard") {
+        if let Some(id) = matches.value_of("id") {
+            let f = |id| move || discard::discard(id);
 
             utils::if_todo_exists(f(id));
         }
