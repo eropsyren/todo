@@ -14,15 +14,24 @@ macro_rules! get_json_from_file_or_return {
         match crate::utils::read_file_to_json($path) {
             Ok(json) => json,
             Err(err) => {
-                print_error!(
-                    "error reading {} file into json: {}",
-                    $path,
-                    err
-                );
+                print_error!("error reading {} file into json: {}", $path, err);
 
                 return;
             }
         };
+    };
+}
+
+macro_rules! validate_json_or_return {
+    ($json:expr, $path:expr) => {
+        match $json {
+            json::JsonValue::Array(_) => $json,
+            _ => {
+                print_error!("error: file {} is not a json array", $path);
+
+                return;
+            }
+        }
     };
 }
 
