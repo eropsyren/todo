@@ -5,10 +5,18 @@ use std::fs::File;
 use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
+    let task = task.trim();
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
     let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
+    let task_hash = hash(task);
 
-    tasks[hash(task)] = json::object! {
+    if tasks.has_key(&task_hash) {
+        print_error!("error: task '{}' already present", task);
+
+        return;
+    }
+
+    tasks[task_hash] = json::object! {
         MESSAGE => task,
         STATUS => UNDONE,
     };
