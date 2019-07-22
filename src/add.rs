@@ -1,20 +1,12 @@
 use crate::constants::{DONE, ID, MESSAGE, TODO_FILE_NAME};
-use json::{self, JsonValue};
+use json;
 use std::collections::hash_map::DefaultHasher;
 use std::fs::File;
 use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
-
-    let mut tasks = match tasks {
-        JsonValue::Array(_) => tasks,
-        _ => {
-            print_error!("error: file {} is not a json array", TODO_FILE_NAME);
-
-            return;
-        }
-    };
+    let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
 
     let new_task = json::object! {
         ID => hash(task),
