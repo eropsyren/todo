@@ -9,14 +9,14 @@ macro_rules! print_error {
     }
 }
 
-macro_rules! get_json_from_todo_or_return {
-    () => {
-        match crate::utils::read_file_to_json(crate::constants::TODO_FILE_NAME) {
+macro_rules! get_json_from_file_or_return {
+    ($path:expr) => {
+        match crate::utils::read_file_to_json($path) {
             Ok(json) => json,
             Err(err) => {
                 print_error!(
                     "error reading {} file into json: {}",
-                    crate::constants::TODO_FILE_NAME,
+                    $path,
                     err
                 );
 

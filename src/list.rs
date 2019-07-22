@@ -3,7 +3,7 @@ use colored::Colorize;
 use json::{self, JsonValue};
 
 pub fn list() {
-    let tasks = get_json_from_todo_or_return!();
+    let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
 
     let tasks = match tasks {
         JsonValue::Array(tasks) => tasks,

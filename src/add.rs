@@ -5,12 +5,12 @@ use std::fs::File;
 use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
-    let tasks = get_json_from_todo_or_return!();
+    let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
 
     let mut tasks = match tasks {
         JsonValue::Array(_) => tasks,
         _ => {
-            print_error!("file {} is not a json array", TODO_FILE_NAME);
+            print_error!("error: file {} is not a json array", TODO_FILE_NAME);
 
             return;
         }
