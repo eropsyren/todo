@@ -1,4 +1,4 @@
-use crate::constants::{DONE, MESSAGE, TODO_FILE_NAME};
+use crate::constants::{DISCARDED, DONE, MESSAGE, STATUS, TODO_FILE_NAME, UNDONE};
 use colored::Colorize;
 use json::{self, JsonValue};
 
@@ -9,16 +9,28 @@ pub fn list() {
     for (id, task) in tasks.entries() {
         let id = format!("[{}]", id).cyan();
         let msg = task[MESSAGE].to_string();
-        let msg = match task[DONE] {
-            JsonValue::Boolean(done) => {
-                if done {
-                    msg.green()
-                } else {
-                    msg.yellow()
-                }
+
+        let status = match &task[STATUS] {
+            JsonValue::Short(s) => s.as_str(),
+            JsonValue::Null => {
+                print_error!("error: missing {} property", STATUS);
+
+                return;
             }
             _ => {
-                print_error!("error: {} property is not a boolean", DONE);
+                print_error!("error: property {} is not a json string", STATUS);
+
+                return;
+            }
+        };
+
+        let msg = match status {
+            DONE => msg.green(),
+            UNDONE => msg.yellow(),
+            DISCARDED => msg.red(),
+            status => {
+                print_error!("error: {} is an indvalid status", status);
+
                 return;
             }
         };

@@ -2,6 +2,7 @@
 mod utils;
 mod add;
 mod constants;
+mod done;
 mod init;
 mod list;
 
@@ -20,6 +21,11 @@ fn main() {
                 .arg(Arg::with_name("task").value_name("TASK").required(true)),
         )
         .subcommand(SubCommand::with_name("list").about("list all tasks in todo list"))
+        .subcommand(
+            SubCommand::with_name("done")
+                .about("mark a task as done")
+                .arg(Arg::with_name("id").value_name("ID").required(true)),
+        )
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("init") {
@@ -36,5 +42,13 @@ fn main() {
 
     if let Some(_) = matches.subcommand_matches("list") {
         utils::if_todo_exists(list::list);
+    }
+
+    if let Some(matches) = matches.subcommand_matches("done") {
+        if let Some(id) = matches.value_of("id") {
+            let f = |id| move || done::done(id);
+
+            utils::if_todo_exists(f(id));
+        }
     }
 }
