@@ -25,9 +25,9 @@ pub fn list() {
         };
 
         let msg = match status {
-            DONE => msg.green(),
-            UNDONE => msg.yellow(),
-            DISCARDED => msg.red(),
+            DONE => msg.bright_green().bold(),
+            UNDONE => msg.bright_yellow().bold(),
+            DISCARDED => msg.bright_red().bold(),
             status => {
                 print_error!("error: {} is an indvalid status", status);
 
