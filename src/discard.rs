@@ -8,7 +8,7 @@ pub fn discard(id: &str) {
     match &mut tasks[id] {
         JsonValue::Null => {
             print_error!("error: no task with {} id", id);
-            
+
             return;
         }
         task => task[STATUS] = JsonValue::String(String::from(DISCARDED)),
