@@ -17,7 +17,6 @@ pub fn list() {
 }
 
 pub fn format_task(id: &str, task: &JsonValue) -> String {
-    let msg = task[MESSAGE].to_string();
 
     let status = match &task[STATUS] {
         JsonValue::Short(s) => s.as_str(),

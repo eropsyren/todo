@@ -34,7 +34,8 @@ pub fn add_subtask(id: &str, task: &str) {
     let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
     let mut tasks = is_object_or_exit!(tasks, TODO_FILE_NAME);
     let super_task = get_mut_prop_or_exit!(tasks, id, JsonValue::Object);
-    let super_task_msg = get_prop_or_exit!(super_task, MESSAGE, JsonValue::Short).to_string();
+    let super_task_msg =
+        get_prop_or_exit!(super_task, MESSAGE, JsonValue::Short, JsonValue::String).to_string();
     let task = task.trim();
     let task_hash = hash(&format!("{}\n{}", super_task_msg, task));
 
