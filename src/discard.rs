@@ -2,8 +2,8 @@ use crate::constants::{DISCARDED, DONE, STATUS, TODO_FILE_NAME};
 use json::JsonValue;
 
 pub fn discard(id: &str) {
-    let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
-    let mut tasks = is_object_or_return!(tasks, TODO_FILE_NAME);
+    let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
+    let mut tasks = is_object_or_exit!(tasks, TODO_FILE_NAME);
 
     let task: &mut JsonValue = match &mut tasks[id] {
         JsonValue::Null => {

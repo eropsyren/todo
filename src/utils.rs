@@ -9,27 +9,25 @@ macro_rules! print_error {
     }
 }
 
-macro_rules! get_json_from_file_or_return {
+macro_rules! get_json_from_file_or_exit {
     ($path:expr) => {
         match crate::utils::read_file_to_json($path) {
             Ok(json) => json,
             Err(err) => {
                 print_error!("error reading {} file into json: {}", $path, err);
-
-                return;
+                std::process::exit(1);
             }
         };
     };
 }
 
-macro_rules! is_object_or_return {
+macro_rules! is_object_or_exit {
     ($json:expr, $path:expr) => {
         match $json {
             json::JsonValue::Object(_) => $json,
             _ => {
                 print_error!("error: file {} is not a json object", $path);
-
-                return;
+                std::process::exit(1);
             }
         }
     };
@@ -47,43 +45,39 @@ macro_rules! write_json_to_file_or_err {
     };
 }
 
-macro_rules! get_prop_or_return {
+macro_rules! get_prop_or_exit {
     ($json_val:expr, $prop_name:expr, JsonValue::$required_type:ident) => {
         match &mut $json_val[$prop_name] {
             obj @ JsonValue::$required_type(_) => obj,
             JsonValue::Null => {
                 print_error!("error: missing property {}", $prop_name);
-
-                return;
+                std::process::exit(1);
             }
             _ => {
                 print_error!(
                     "error: json value associated with {} property has incorrect type",
                     $prop_name
                 );
-
-                return;
+                std::process::exit(1);
             }
         };
     };
 }
 
-macro_rules! extract_prop_or_return {
+macro_rules! extract_prop_or_exit {
     ($json_val:expr, $prop_name:expr, JsonValue::$required_type:ident) => {
         match &mut $json_val[$prop_name] {
             JsonValue::$required_type(val) => val,
             JsonValue::Null => {
                 print_error!("error: missing property {}", $prop_name);
-
-                return;
+                std::process::exit(1);
             }
             _ => {
                 print_error!(
                     "error: json value associated with {} property has incorrect type",
                     $prop_name
                 );
-
-                return;
+                std::process::exit(1);
             }
         };
     };

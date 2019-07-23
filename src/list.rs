@@ -4,8 +4,8 @@ use json::{self, JsonValue};
 use std::process;
 
 pub fn list() {
-    let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
-    let tasks = is_object_or_return!(tasks, TODO_FILE_NAME);
+    let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
+    let tasks = is_object_or_exit!(tasks, TODO_FILE_NAME);
 
     for (id, task) in tasks.entries() {
         println!("{}", format_task(id, task));
