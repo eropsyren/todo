@@ -22,7 +22,7 @@ macro_rules! get_json_from_file_or_return {
     };
 }
 
-macro_rules! validate_json_or_return {
+macro_rules! is_object_or_return {
     ($json:expr, $path:expr) => {
         match $json {
             json::JsonValue::Object(_) => $json,

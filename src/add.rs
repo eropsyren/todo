@@ -6,7 +6,7 @@ use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
-    let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
+    let mut tasks = is_object_or_return!(tasks, TODO_FILE_NAME);
     let task = task.trim();
     let task_hash = hash(task);
 
@@ -32,7 +32,7 @@ pub fn add(task: &str) {
 
 pub fn add_subtask(id: &str, task: &str) {
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
-    let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
+    let mut tasks = is_object_or_return!(tasks, TODO_FILE_NAME);
     let super_task = get_prop_or_return!(tasks, id, JsonValue::Object);
     let super_task_msg = get_prop_or_return!(super_task, MESSAGE, JsonValue::Short).to_string();
     let task = task.trim();

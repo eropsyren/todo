@@ -3,7 +3,7 @@ use json::JsonValue;
 
 pub fn discard(id: &str) {
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
-    let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
+    let mut tasks = is_object_or_return!(tasks, TODO_FILE_NAME);
 
     let task: &mut JsonValue = match &mut tasks[id] {
         JsonValue::Null => {
