@@ -17,22 +17,10 @@ pub fn list() {
 }
 
 pub fn format_task(id: &str, task: &JsonValue) -> String {
+    let msg = get_prop_or_exit!(task, MESSAGE, JsonValue::Short, JsonValue::String).to_string();
+    let status = get_prop_or_exit!(task, STATUS, JsonValue::Short).to_string();
 
-    let status = match &task[STATUS] {
-        JsonValue::Short(s) => s.as_str(),
-        JsonValue::Null => {
-            print_error!("error: missing {} property", STATUS);
-
-            process::exit(1);
-        }
-        _ => {
-            print_error!("error: property {} is not a json string", STATUS);
-
-            process::exit(1);
-        }
-    };
-
-    let msg = match status {
+    let msg = match status.as_str() {
         DONE => msg.bright_green().bold(),
         UNDONE => msg.bright_yellow().bold(),
         DISCARDED => msg.bright_red().bold(),
