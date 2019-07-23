@@ -25,18 +25,33 @@ fn main() {
                         .value_name("ID")
                         .help("Super-task's id"),
                 )
-                .arg(Arg::with_name("task").value_name("TASK").required(true)),
+                .arg(
+                    Arg::with_name("task")
+                        .value_name("TASK")
+                        .help("Task message")
+                        .required(true),
+                ),
         )
         .subcommand(SubCommand::with_name("list").about("Lists all tasks in todo list"))
         .subcommand(
             SubCommand::with_name("done")
                 .about("Marks a task as done")
-                .arg(Arg::with_name("id").value_name("ID").required(true)),
+                .arg(
+                    Arg::with_name("id")
+                        .value_name("ID")
+                        .help("Task's id to be marked as done")
+                        .required(true),
+                ),
         )
         .subcommand(
             SubCommand::with_name("discard")
                 .about("Marks a task as discarded")
-                .arg(Arg::with_name("id").value_name("ID").required(true)),
+                .arg(
+                    Arg::with_name("id")
+                        .value_name("ID")
+                        .help("Task's id to be marked as discarded")
+                        .required(true),
+                ),
         )
         .get_matches();
 
