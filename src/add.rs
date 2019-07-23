@@ -35,9 +35,9 @@ pub fn add_subtask(id: &str, task: &str) {
     let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
     let super_task = get_prop_or_return!(tasks, id, JsonValue::Object);
     let super_task_msg = extract_prop_or_return!(super_task, MESSAGE, JsonValue::Short);
-    let super_task_msg = super_task_msg.as_str(); 
+    let super_task_msg = super_task_msg.as_str();
     let task = task.trim();
-    let task_hash = hash(&format!("{}{}", super_task_msg, task));
+    let task_hash = hash(&format!("{}\n{}", super_task_msg, task));
 
     if !super_task.has_key(SUBTASKS) {
         super_task[SUBTASKS] = json::object! {};
@@ -69,5 +69,8 @@ fn hash(string: &str) -> String {
     let mut s = DefaultHasher::new();
 
     string.hash(&mut s);
-    s.finish().to_string()
+
+    let hash = s.finish();
+
+    format!("{:x}", hash)
 }
