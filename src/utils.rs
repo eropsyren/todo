@@ -47,6 +47,48 @@ macro_rules! write_json_to_file_or_err {
     };
 }
 
+macro_rules! get_prop_or_return {
+    ($json_val:expr, $prop_name:expr, JsonValue::$required_type:ident) => {
+        match &mut $json_val[$prop_name] {
+            obj @ JsonValue::$required_type(_) => obj,
+            JsonValue::Null => {
+                print_error!("error: missing property {}", $prop_name);
+
+                return;
+            }
+            _ => {
+                print_error!(
+                    "error: json value associated with {} property has incorrect type",
+                    $prop_name
+                );
+
+                return;
+            }
+        };
+    };
+}
+
+macro_rules! extract_prop_or_return {
+    ($json_val:expr, $prop_name:expr, JsonValue::$required_type:ident) => {
+        match &mut $json_val[$prop_name] {
+            JsonValue::$required_type(val) => val,
+            JsonValue::Null => {
+                print_error!("error: missing property {}", $prop_name);
+
+                return;
+            }
+            _ => {
+                print_error!(
+                    "error: json value associated with {} property has incorrect type",
+                    $prop_name
+                );
+
+                return;
+            }
+        };
+    };
+}
+
 pub fn if_todo_exists(f: impl FnOnce() -> ()) {
     let exists = Path::new(TODO_FILE_NAME).exists();
 

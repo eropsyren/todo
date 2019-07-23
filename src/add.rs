@@ -5,9 +5,9 @@ use std::fs::File;
 use std::hash::{Hash, Hasher};
 
 pub fn add(task: &str) {
-    let task = task.trim();
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
     let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
+    let task = task.trim();
     let task_hash = hash(task);
 
     if tasks.has_key(&task_hash) {
@@ -31,39 +31,19 @@ pub fn add(task: &str) {
 }
 
 pub fn add_subtask(id: &str, task: &str) {
-    let task = task.trim();
     let tasks = get_json_from_file_or_return!(TODO_FILE_NAME);
     let mut tasks = validate_json_or_return!(tasks, TODO_FILE_NAME);
-
-    let super_task: &mut JsonValue = match &mut tasks[id] {
-        obj @ JsonValue::Object(_) => obj,
-        JsonValue::Null => {
-            print_error!("error: no task with {} id", id);
-
-            return;
-        }
-        _ => {
-            print_error!("error: the task with {} id is not a json object", id);
-
-            return;
-        }
-    };
+    let super_task = get_prop_or_return!(tasks, id, JsonValue::Object);
+    let super_task_msg = extract_prop_or_return!(super_task, MESSAGE, JsonValue::Short);
+    let super_task_msg = super_task_msg.as_str(); 
+    let task = task.trim();
+    let task_hash = hash(&format!("{}{}", super_task_msg, task));
 
     if !super_task.has_key(SUBTASKS) {
         super_task[SUBTASKS] = json::object! {};
     }
 
-    let sub_tasks = match &mut super_task[SUBTASKS] {
-        obj @ JsonValue::Object(_) => obj,
-        JsonValue::Null => unreachable!(),
-        _ => {
-            print_error!("error: {} property is not a json object", SUBTASKS);
-
-            return;
-        }
-    };
-
-    let task_hash = hash(task);
+    let sub_tasks = get_prop_or_return!(super_task, SUBTASKS, JsonValue::Object);
 
     if sub_tasks.has_key(&task_hash) {
         print_error!("error: subtask '{}' already present", task);
