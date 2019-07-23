@@ -47,7 +47,7 @@ macro_rules! write_json_to_file_or_err {
 
 macro_rules! get_prop_or_exit {
     ($json_val:expr, $prop_name:expr, JsonValue::$required_type:ident) => {
-        match &mut $json_val[$prop_name] {
+        match &$json_val[$prop_name] {
             obj @ JsonValue::$required_type(_) => obj,
             JsonValue::Null => {
                 print_error!("error: missing property {}", $prop_name);
@@ -64,10 +64,10 @@ macro_rules! get_prop_or_exit {
     };
 }
 
-macro_rules! extract_prop_or_exit {
+macro_rules! get_mut_prop_or_exit {
     ($json_val:expr, $prop_name:expr, JsonValue::$required_type:ident) => {
         match &mut $json_val[$prop_name] {
-            JsonValue::$required_type(val) => val,
+            obj @ JsonValue::$required_type(_) => obj,
             JsonValue::Null => {
                 print_error!("error: missing property {}", $prop_name);
                 std::process::exit(1);
