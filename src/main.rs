@@ -45,18 +45,16 @@ fn main() {
     }
 
     if let Some(matches) = matches.subcommand_matches("add") {
-        if let Some(id) = matches.value_of("id") {
-            if let Some(task) = matches.value_of("task") {
+        if let Some(task) = matches.value_of("task") {
+            if let Some(id) = matches.value_of("id") {
                 let f = |id, task| move || add::add_subtask(id, task);
 
                 utils::if_todo_exists(f(id, task));
+            } else {
+                let f = |task| move || add::add(task);
+
+                utils::if_todo_exists(f(task));
             }
-        }
-
-        if let Some(task) = matches.value_of("task") {
-            let f = |task| move || add::add(task);
-
-            utils::if_todo_exists(f(task));
         }
     }
 
