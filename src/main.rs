@@ -22,8 +22,8 @@ fn main() {
                 .about("Adds a task to todo list")
                 .arg(
                     Arg::with_name("task")
-                        .value_name("TASK")
-                        .help("Task message")
+                        .value_name("TITLE")
+                        .help("Task title")
                         .required(true),
                 ),
         )

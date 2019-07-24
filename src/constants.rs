@@ -1,5 +1,5 @@
 pub const TODO_FILE_NAME: &'static str = ".todo.json";
-pub const MESSAGE: &'static str = "msg";
+pub const TITLE: &'static str = "title";
 pub const STATUS: &'static str = "status";
 pub const DONE: &'static str = "done";
 pub const UNDONE: &'static str = "undone";

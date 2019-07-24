@@ -1,4 +1,4 @@
-use crate::constants::{DISCARDED, DONE, MESSAGE, STATUS, TODO_FILE_NAME, UNDONE};
+use crate::constants::{DISCARDED, DONE, STATUS, TITLE, TODO_FILE_NAME, UNDONE};
 use colored::Colorize;
 use json::{self, JsonValue};
 use std::process;
@@ -13,7 +13,7 @@ pub fn list() {
 }
 
 pub fn format_task(id: &str, task: &JsonValue) -> String {
-    let msg = get_prop_or_exit!(task, MESSAGE, JsonValue::Short, JsonValue::String).to_string();
+    let msg = get_prop_or_exit!(task, TITLE, JsonValue::Short, JsonValue::String).to_string();
     let status = get_prop_or_exit!(task, STATUS, JsonValue::Short).to_string();
 
     let msg = match status.as_str() {

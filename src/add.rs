@@ -1,4 +1,4 @@
-use crate::constants::{MESSAGE, STATUS, TODO_FILE_NAME, UNDONE};
+use crate::constants::{STATUS, TITLE, TODO_FILE_NAME, UNDONE};
 use json;
 use std::collections::hash_map::DefaultHasher;
 use std::fs::File;
@@ -17,7 +17,7 @@ pub fn add(task: &str) {
     }
 
     tasks[task_hash] = json::object! {
-        MESSAGE => task,
+        TITLE => task,
         STATUS => UNDONE,
     };
 
