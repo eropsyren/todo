@@ -6,6 +6,7 @@ mod discard;
 mod done;
 mod init;
 mod list;
+mod remove;
 
 use clap::{App, Arg, SubCommand};
 
@@ -47,6 +48,14 @@ fn main() {
                         .required(true),
                 ),
         )
+        .subcommand(
+            SubCommand::with_name("remove").about("Remove a task").arg(
+                Arg::with_name("id")
+                    .value_name("ID")
+                    .help("Task's id to be marked as discarded")
+                    .required(true),
+            ),
+        )
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("init") {
@@ -76,6 +85,14 @@ fn main() {
     if let Some(matches) = matches.subcommand_matches("discard") {
         if let Some(id) = matches.value_of("id") {
             let f = |id| move || discard::discard(id);
+
+            utils::if_todo_exists(f(id));
+        }
+    }
+
+    if let Some(matches) = matches.subcommand_matches("remove") {
+        if let Some(id) = matches.value_of("id") {
+            let f = |id| move || remove::remove(id);
 
             utils::if_todo_exists(f(id));
         }
