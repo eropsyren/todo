@@ -4,4 +4,3 @@ pub const STATUS: &'static str = "status";
 pub const DONE: &'static str = "done";
 pub const UNDONE: &'static str = "undone";
 pub const DISCARDED: &'static str = "discarded";
-pub const SUBTASKS: &'static str = "subtasks";

@@ -20,12 +20,6 @@ fn main() {
             SubCommand::with_name("add")
                 .about("Adds a task to todo list")
                 .arg(
-                    Arg::with_name("id")
-                        .long("id")
-                        .value_name("ID")
-                        .help("Super-task's id"),
-                )
-                .arg(
                     Arg::with_name("task")
                         .value_name("TASK")
                         .help("Task message")
@@ -61,15 +55,9 @@ fn main() {
 
     if let Some(matches) = matches.subcommand_matches("add") {
         if let Some(task) = matches.value_of("task") {
-            if let Some(id) = matches.value_of("id") {
-                let f = |id, task| move || add::add_subtask(id, task);
+            let f = |task| move || add::add(task);
 
-                utils::if_todo_exists(f(id, task));
-            } else {
-                let f = |task| move || add::add(task);
-
-                utils::if_todo_exists(f(task));
-            }
+            utils::if_todo_exists(f(task));
         }
     }
 

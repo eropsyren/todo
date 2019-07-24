@@ -1,4 +1,4 @@
-use crate::constants::{DISCARDED, DONE, MESSAGE, STATUS, SUBTASKS, TODO_FILE_NAME, UNDONE};
+use crate::constants::{DISCARDED, DONE, MESSAGE, STATUS, TODO_FILE_NAME, UNDONE};
 use colored::Colorize;
 use json::{self, JsonValue};
 use std::process;
@@ -9,10 +9,6 @@ pub fn list() {
 
     for (id, task) in tasks.entries() {
         println!("{}", format_task(id, task));
-
-        for (id, sub_task) in task[SUBTASKS].entries() {
-            println!("\t{}", format_task(id, sub_task));
-        }
     }
 }
 
