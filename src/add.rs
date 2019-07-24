@@ -1,13 +1,15 @@
-use crate::constants::{STATUS, TITLE, TODO_FILE_NAME, UNDONE, DESCRIPTION};
+use crate::constants::{DESCRIPTION, STATUS, TITLE, TODO_FILE_NAME, UNDONE, TMP_DIR, EDITOR};
 use json;
 use std::collections::hash_map::DefaultHasher;
-use std::fs::File;
 use std::hash::{Hash, Hasher};
+use std::io::{self, Write};
+use std::process::{self, Command};
+use std::fs;
 
-pub fn add(task: &str) {
+pub fn add_full(task_title: &str, task_description: &str) {
     let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
     let mut tasks = is_object_or_exit!(tasks, TODO_FILE_NAME);
-    let task = task.trim();
+    let task = task_title.trim();
     let task_hash = hash(task);
 
     if tasks.has_key(&task_hash) {
@@ -17,18 +19,43 @@ pub fn add(task: &str) {
     }
 
     tasks[task_hash] = json::object! {
-        TITLE => task,
+        TITLE => task_title,
+        DESCRIPTION => task_description,
         STATUS => UNDONE,
-        DESCRIPTION => "",
     };
 
-    match File::create(TODO_FILE_NAME) {
-        Ok(mut file) => match tasks.write(&mut file) {
-            Ok(_) => (),
-            Err(err) => print_error!("error writing to {}: {}", TODO_FILE_NAME, err),
-        },
-        Err(err) => print_error!("error rewriting {}: {}", TODO_FILE_NAME, err),
+    write_json_to_file_or_err!(tasks, TODO_FILE_NAME);
+}
+
+pub fn add_title(task_title: &str) {
+    add_full(task_title, "");
+}
+
+pub fn add_with_prompt() {
+    let mut title = String::new();
+
+    print!("enter task title: ");
+    let _ = io::stdout().flush();
+    
+    match io::stdin().read_line(&mut title) {
+        Ok(_) => (),
+        Err(error) => {
+            print_error!("error: {}", error);
+            process::exit(1);
+        }
     }
+
+    let tmp_file = format!("{}/{}", TMP_DIR, hash(&title)); 
+    let _ = Command::new(EDITOR)
+        .arg(&tmp_file)
+        .status()
+        .expect("Failed to execute command");
+
+    let title = title.trim();
+    let description = fs::read_to_string(tmp_file).expect("unable to read temporary file");
+    let description = description.trim();
+
+    add_full(title, description);
 }
 
 fn hash(string: &str) -> String {

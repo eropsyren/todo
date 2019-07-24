@@ -21,10 +21,20 @@ fn main() {
             SubCommand::with_name("add")
                 .about("Adds a task to todo list")
                 .arg(
-                    Arg::with_name("task")
+                    Arg::with_name("title")
+                        .short("t")
+                        .long("title")
                         .value_name("TITLE")
                         .help("Task title")
-                        .required(true),
+                        .takes_value(true),
+                )
+                .arg(
+                    Arg::with_name("description")
+                        .short("d")
+                        .long("description")
+                        .value_name("DESCRIPTION")
+                        .help("Task description")
+                        .takes_value(true),
                 ),
         )
         .subcommand(SubCommand::with_name("list").about("Lists all tasks in todo list"))
@@ -63,10 +73,21 @@ fn main() {
     }
 
     if let Some(matches) = matches.subcommand_matches("add") {
-        if let Some(task) = matches.value_of("task") {
-            let f = |task| move || add::add(task);
+        let title = matches.value_of("title");
+        let description = matches.value_of("description");
 
-            utils::if_todo_exists(f(task));
+        match (title, description) {
+            (Some(title), Some(description)) => {
+                let f = |t, d| move || add::add_full(t, d);
+
+                utils::if_todo_exists(f(title, description));
+            }
+            (Some(title), None) => {
+                let f = |t| move || add::add_title(t);
+
+                utils::if_todo_exists(f(title));
+            }
+            _ => utils::if_todo_exists(add::add_with_prompt),
         }
     }
 
