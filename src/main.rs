@@ -99,14 +99,14 @@ fn main() {
 
         match (title, description) {
             (Some(title), Some(description)) => {
-                let f = |t, d| move || add::add_full(t, d);
+                let f = || add::add_full(title, description);
 
-                utils::if_todo_exists(f(title, description));
+                utils::if_todo_exists(f);
             }
             (Some(title), None) => {
-                let f = |t| move || add::add_title(t);
+                let f = || add::add_title(title);
 
-                utils::if_todo_exists(f(title));
+                utils::if_todo_exists(f);
             }
             _ => utils::if_todo_exists(add::add_with_prompt),
         }
@@ -115,40 +115,40 @@ fn main() {
     if let Some(matches) = matches.subcommand_matches("list") {
         let is_long = matches.is_present("long");
         
-        let f = |is_long| move || list::list(is_long);
+        let f = || list::list(is_long);
 
-        utils::if_todo_exists(f(is_long));
+        utils::if_todo_exists(f);
     }
 
     if let Some(matches) = matches.subcommand_matches("done") {
         if let Some(id) = matches.value_of("id") {
-            let f = |id| move || done::done(id);
+            let f = || done::done(id);
 
-            utils::if_todo_exists(f(id));
+            utils::if_todo_exists(f);
         }
     }
 
     if let Some(matches) = matches.subcommand_matches("discard") {
         if let Some(id) = matches.value_of("id") {
-            let f = |id| move || discard::discard(id);
+            let f = || discard::discard(id);
 
-            utils::if_todo_exists(f(id));
+            utils::if_todo_exists(f);
         }
     }
 
     if let Some(matches) = matches.subcommand_matches("remove") {
         if let Some(id) = matches.value_of("id") {
-            let f = |id| move || remove::remove(id);
+            let f = || remove::remove(id);
 
-            utils::if_todo_exists(f(id));
+            utils::if_todo_exists(f);
         }
     }
 
     if let Some(matches) = matches.subcommand_matches("edit") {
         if let Some(id) = matches.value_of("id") {
-            let f = |id| move || edit::edit(id);
+            let f = || edit::edit(id);
 
-            utils::if_todo_exists(f(id));
+            utils::if_todo_exists(f);
         }
     }
 }
