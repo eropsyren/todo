@@ -114,7 +114,7 @@ fn main() {
 
     if let Some(matches) = matches.subcommand_matches("list") {
         let is_long = matches.is_present("long");
-        
+
         let f = || list::list(is_long);
 
         utils::if_todo_exists(f);
