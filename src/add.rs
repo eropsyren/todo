@@ -1,10 +1,10 @@
-use crate::constants::{DESCRIPTION, STATUS, TITLE, TODO_FILE_NAME, UNDONE, TMP_DIR, EDITOR};
+use crate::constants::{DESCRIPTION, EDITOR, STATUS, TITLE, TMP_DIR, TODO_FILE_NAME, UNDONE};
 use json;
 use std::collections::hash_map::DefaultHasher;
+use std::fs;
 use std::hash::{Hash, Hasher};
 use std::io::{self, Write};
 use std::process::{self, Command};
-use std::fs;
 
 pub fn add_full(task_title: &str, task_description: &str) {
     let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
@@ -36,10 +36,10 @@ pub fn add_with_prompt() {
 
     print!("enter task title: ");
     let _ = io::stdout().flush().unwrap_or_else(|_| {
-            print_error!("error: cannot flush stdout");
-            process::exit(1);        
+        print_error!("error: cannot flush stdout");
+        process::exit(1);
     });
-    
+
     match io::stdin().read_line(&mut title) {
         Ok(_) => (),
         Err(error) => {
@@ -48,7 +48,7 @@ pub fn add_with_prompt() {
         }
     }
 
-    let tmp_file = format!("{}/{}", TMP_DIR, hash(&title)); 
+    let tmp_file = format!("{}/{}", TMP_DIR, hash(&title));
     let _ = Command::new(EDITOR)
         .arg(&tmp_file)
         .status()
@@ -59,8 +59,8 @@ pub fn add_with_prompt() {
 
     let title = title.trim();
     let description = fs::read_to_string(tmp_file).unwrap_or_else(|err| {
-            print_error!("error: {}", err);
-            process::exit(1);
+        print_error!("error: {}", err);
+        process::exit(1);
     });
     let description = description.trim();
 
@@ -74,5 +74,23 @@ fn hash(string: &str) -> String {
 
     let hash = s.finish();
 
-    format!("{:x}", hash)
+    to_base_36(hash)
+}
+
+fn to_base_36(mut value: u64) -> String {
+    const BUFFER: [char; 36] = [
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+        'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    ];
+
+    let mut result = String::new();
+
+    while value / 36 != 0 {
+        result.push(BUFFER[(value % 36) as usize]);
+        value = value / 36;
+    }
+
+    result.push(BUFFER[(value % 36) as usize]);
+
+    result.chars().rev().collect()
 }
