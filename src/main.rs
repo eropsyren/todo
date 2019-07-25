@@ -47,6 +47,14 @@ fn main() {
                         .long("long")
                         .help("List tasks with their id")
                         .takes_value(false),
+                )
+                .arg(
+                    Arg::with_name("id")
+                        .short("i")
+                        .long("id")
+                        .value_name("ID")
+                        .help("List the task with the given ID")
+                        .takes_value(true),
                 ),
         )
         .subcommand(
@@ -113,11 +121,16 @@ fn main() {
     }
 
     if let Some(matches) = matches.subcommand_matches("list") {
-        let is_long = matches.is_present("long");
+        if let Some(id) = matches.value_of("id") {
+            let f = || list::list_task(id);
 
-        let f = || list::list(is_long);
+            utils::if_todo_exists(f);
+        } else {
+            let is_long = matches.is_present("long");
+            let f = || list::list(is_long);
 
-        utils::if_todo_exists(f);
+            utils::if_todo_exists(f);
+        }
     }
 
     if let Some(matches) = matches.subcommand_matches("done") {

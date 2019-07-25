@@ -1,4 +1,4 @@
-use crate::constants::{DISCARDED, DONE, STATUS, TITLE, TODO_FILE_NAME, UNDONE};
+use crate::constants::{DESCRIPTION, DISCARDED, DONE, STATUS, TITLE, TODO_FILE_NAME, UNDONE};
 use colored::Colorize;
 use json::{self, JsonValue};
 use std::process;
@@ -16,6 +16,23 @@ pub fn list(is_long: bool) {
             println!("{} {}", "-->".blue().bold(), format_task_title(task));
         }
     }
+}
+
+pub fn list_task(id: &str) {
+    let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
+    let tasks = is_object_or_exit!(tasks, TODO_FILE_NAME);
+    let task = get_prop_or_exit!(tasks, id, JsonValue::Object);
+    let id = format!("[{}]", id);
+    let description =
+        get_prop_or_exit!(task, DESCRIPTION, JsonValue::Short, JsonValue::String).to_string();
+    let description: String = description
+        .lines()
+        .map(|line| format!("\t{}", line.bold()))
+        .collect::<Vec<String>>()
+        .join("\n");
+
+    println!("{} {}", id.blue().bold(), format_task_title(task));
+    println!("{}", description);
 }
 
 fn format_task_title(task: &JsonValue) -> String {
