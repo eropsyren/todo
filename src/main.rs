@@ -1,5 +1,6 @@
 #[macro_use]
 mod utils;
+mod edit;
 mod add;
 mod constants;
 mod discard;
@@ -66,6 +67,14 @@ fn main() {
                     .required(true),
             ),
         )
+        .subcommand(
+            SubCommand::with_name("edit").about("Edit a task description").arg(
+                Arg::with_name("id")
+                .value_name("ID")
+                .help("The id of the task to edit")
+                .required(true),
+            )
+        )
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("init") {
@@ -114,6 +123,14 @@ fn main() {
     if let Some(matches) = matches.subcommand_matches("remove") {
         if let Some(id) = matches.value_of("id") {
             let f = |id| move || remove::remove(id);
+
+            utils::if_todo_exists(f(id));
+        }
+    }
+
+    if let Some(matches) = matches.subcommand_matches("edit") {
+        if let Some(id) = matches.value_of("id") {
+            let f = |id| move || edit::edit(id);
 
             utils::if_todo_exists(f(id));
         }
