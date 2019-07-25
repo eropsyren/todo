@@ -35,7 +35,10 @@ pub fn add_with_prompt() {
     let mut title = String::new();
 
     print!("enter task title: ");
-    let _ = io::stdout().flush();
+    let _ = io::stdout().flush().unwrap_or_else(|_| {
+            print_error!("error: cannot flush stdout");
+            process::exit(1);        
+    });
     
     match io::stdin().read_line(&mut title) {
         Ok(_) => (),
@@ -49,10 +52,16 @@ pub fn add_with_prompt() {
     let _ = Command::new(EDITOR)
         .arg(&tmp_file)
         .status()
-        .expect("Failed to execute command");
+        .unwrap_or_else(|err| {
+            print_error!("error: {}", err);
+            process::exit(1);
+        });
 
     let title = title.trim();
-    let description = fs::read_to_string(tmp_file).expect("unable to read temporary file");
+    let description = fs::read_to_string(tmp_file).unwrap_or_else(|err| {
+            print_error!("error: {}", err);
+            process::exit(1);
+    });
     let description = description.trim();
 
     add_full(title, description);
