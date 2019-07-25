@@ -1,10 +1,10 @@
 #[macro_use]
 mod utils;
-mod edit;
 mod add;
 mod constants;
 mod discard;
 mod done;
+mod edit;
 mod init;
 mod list;
 mod remove;
@@ -68,12 +68,14 @@ fn main() {
             ),
         )
         .subcommand(
-            SubCommand::with_name("edit").about("Edit a task description").arg(
-                Arg::with_name("id")
-                .value_name("ID")
-                .help("The id of the task to edit")
-                .required(true),
-            )
+            SubCommand::with_name("edit")
+                .about("Edit a task description")
+                .arg(
+                    Arg::with_name("id")
+                        .value_name("ID")
+                        .help("The id of the task to edit")
+                        .required(true),
+                ),
         )
         .get_matches();
 

@@ -7,19 +7,26 @@ pub fn list() {
     let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
     let tasks = is_object_or_exit!(tasks, TODO_FILE_NAME);
 
-    for (id, task) in tasks.entries() {
-        println!("{}", format_task(id, task));
+    for (_, task) in tasks.entries() {
+        println!("{} {}", "-->".blue().bold(), format_task_title(task));
     }
 }
 
-pub fn format_task(id: &str, task: &JsonValue) -> String {
-    let msg = get_prop_or_exit!(task, TITLE, JsonValue::Short, JsonValue::String).to_string();
+fn format_task(id: &str, task: &JsonValue) -> String {
+    let id = format!("[{}]", id).cyan();
+    let title = format_task_title(task);
+
+    format!("{} {}", id, title)
+}
+
+fn format_task_title(task: &JsonValue) -> String {
+    let title = get_prop_or_exit!(task, TITLE, JsonValue::Short, JsonValue::String).to_string();
     let status = get_prop_or_exit!(task, STATUS, JsonValue::Short).to_string();
 
-    let msg = match status.as_str() {
-        DONE => msg.bright_green().bold(),
-        UNDONE => msg.bright_yellow().bold(),
-        DISCARDED => msg.bright_red().bold(),
+    let title = match status.as_str() {
+        DONE => title.bright_green().bold(),
+        UNDONE => title.bright_yellow().bold(),
+        DISCARDED => title.bright_red().bold(),
         status => {
             print_error!("error: {} is an indvalid status", status);
 
@@ -27,7 +34,5 @@ pub fn format_task(id: &str, task: &JsonValue) -> String {
         }
     };
 
-    let id = format!("[{}]", id).cyan();
-
-    format!("{} {}", id, msg)
+    format!("{}", title)
 }
