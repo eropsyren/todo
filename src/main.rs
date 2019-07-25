@@ -38,7 +38,18 @@ fn main() {
                         .takes_value(true),
                 ),
         )
-        .subcommand(SubCommand::with_name("list").about("Lists all tasks in todo list"))
+        .subcommand(
+            SubCommand::with_name("list")
+                .about("Lists all tasks in todo list")
+                .arg(
+                    Arg::with_name("id")
+                        .short("i")
+                        .long("id")
+                        .value_name("ID")
+                        .help("List all tasks with associated id")
+                        .takes_value(false),
+                ),
+        )
         .subcommand(
             SubCommand::with_name("done")
                 .about("Marks a task as done")
@@ -102,8 +113,12 @@ fn main() {
         }
     }
 
-    if let Some(_) = matches.subcommand_matches("list") {
-        utils::if_todo_exists(list::list);
+    if let Some(matches) = matches.subcommand_matches("list") {
+        let is_id = matches.is_present("id");
+        
+        let f = |is_id| move || list::list(is_id);
+
+        utils::if_todo_exists(f(is_id));
     }
 
     if let Some(matches) = matches.subcommand_matches("done") {
