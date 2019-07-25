@@ -42,11 +42,10 @@ fn main() {
             SubCommand::with_name("list")
                 .about("Lists all tasks in todo list")
                 .arg(
-                    Arg::with_name("id")
-                        .short("i")
-                        .long("id")
-                        .value_name("ID")
-                        .help("List all tasks with associated id")
+                    Arg::with_name("long")
+                        .short("l")
+                        .long("long")
+                        .help("List tasks with their id")
                         .takes_value(false),
                 ),
         )
@@ -114,11 +113,11 @@ fn main() {
     }
 
     if let Some(matches) = matches.subcommand_matches("list") {
-        let is_id = matches.is_present("id");
+        let is_long = matches.is_present("long");
         
-        let f = |is_id| move || list::list(is_id);
+        let f = |is_long| move || list::list(is_long);
 
-        utils::if_todo_exists(f(is_id));
+        utils::if_todo_exists(f(is_long));
     }
 
     if let Some(matches) = matches.subcommand_matches("done") {

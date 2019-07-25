@@ -3,12 +3,12 @@ use colored::Colorize;
 use json::{self, JsonValue};
 use std::process;
 
-pub fn list(is_id: bool) {
+pub fn list(is_long: bool) {
     let tasks = get_json_from_file_or_exit!(TODO_FILE_NAME);
     let tasks = is_object_or_exit!(tasks, TODO_FILE_NAME);
 
     for (id, task) in tasks.entries() {
-        if is_id {
+        if is_long {
             let id = format!("[{}]", id);
 
             println!("{} {}", id.blue().bold(), format_task_title(task));
