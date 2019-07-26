@@ -24,14 +24,3 @@ pub fn remove(id: &str) {
 
     write_json_to_file_or_err!(tasks, TODO_FILE_NAME);
 }
-
-// use std::process::Command;
-
-// fn main() {
-//     let output = Command::new("nano")
-//         .arg("xd.txt")
-//         .status()
-//         .expect("Failed to execute command");
-
-//     println!("{:?}", output);
-// }
