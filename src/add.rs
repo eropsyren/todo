@@ -1,9 +1,8 @@
 use crate::constants::{DESCRIPTION, EDITOR, STATUS, TITLE, TMP_DIR, TODO_FILE_NAME, UNDONE};
 use json;
 use std::collections::hash_map::DefaultHasher;
-use std::fs;
+use std::fs::{self, File};
 use std::hash::{Hash, Hasher};
-use std::io::{self, Write};
 use std::process::{self, Command};
 
 pub fn add_full(task_title: &str, task_description: &str) {
@@ -32,23 +31,13 @@ pub fn add_title(task_title: &str) {
 }
 
 pub fn add_with_prompt() {
-    let mut title = String::new();
+    let tmp_file = format!("{}/new_task", TMP_DIR);
 
-    print!("enter task title: ");
-    let _ = io::stdout().flush().unwrap_or_else(|_| {
-        print_error!("error: cannot flush stdout");
+    File::create(&tmp_file).unwrap_or_else(|err| {
+        print_error!("error: {}", err);
         process::exit(1);
     });
 
-    match io::stdin().read_line(&mut title) {
-        Ok(_) => (),
-        Err(error) => {
-            print_error!("error: {}", error);
-            process::exit(1);
-        }
-    }
-
-    let tmp_file = format!("{}/{}", TMP_DIR, hash(&title));
     let _ = Command::new(EDITOR)
         .arg(&tmp_file)
         .status()
@@ -57,12 +46,21 @@ pub fn add_with_prompt() {
             process::exit(1);
         });
 
-    let title = title.trim();
-    let description = fs::read_to_string(tmp_file).unwrap_or_else(|err| {
+    let file_content = fs::read_to_string(&tmp_file).unwrap_or_else(|err| {
         print_error!("error: {}", err);
         process::exit(1);
     });
-    let description = description.trim();
+
+    let file_lines: Vec<&str> = file_content.trim().lines().collect();
+    let title = match file_lines.first() {
+        Some(title) => title,
+        None => {
+            print_error!("error: no title provided");
+            process::exit(1);
+        }
+    };
+    let title = title.trim();
+    let description = &file_lines[1..].join("\n");
 
     add_full(title, description);
 }
