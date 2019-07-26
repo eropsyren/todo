@@ -7,7 +7,7 @@ pub fn discard(id: &str) {
 
     let task: &mut JsonValue = match &mut tasks[id] {
         JsonValue::Null => {
-            print_error!("error: no task with {} id", id);
+            print_error!("error: no task with given id [{}]", id);
 
             return;
         }
@@ -17,12 +17,12 @@ pub fn discard(id: &str) {
     if let JsonValue::Short(s) = task[STATUS] {
         match s.as_str() {
             DONE => {
-                print_error!("error: cannot discard a {} task", DONE);
+                print_error!("error: cannot discard a '{}' task", DONE);
 
                 return;
             }
             DISCARDED => {
-                print_error!("error: cannot discard a {} task", DISCARDED);
+                print_error!("error: cannot discard a '{}' task", DISCARDED);
 
                 return;
             }

@@ -42,7 +42,7 @@ pub fn edit(id: &str) {
         task[DESCRIPTION] = JsonValue::from(new_description);
         write_json_to_file_or_err!(tasks, TODO_FILE_NAME);
     } else {
-        print_error!("error: missing property {} in task [{}]", DESCRIPTION, id);
+        print_error!("error: missing property '{}' in task [{}]", DESCRIPTION, id);
         process::exit(1);
     }
 }

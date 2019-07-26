@@ -52,12 +52,12 @@ macro_rules! get_prop_or_exit {
                 obj @ JsonValue::$required_type(_) => obj,
             )*
             JsonValue::Null => {
-                print_error!("error: missing property {}", $prop_name);
+                print_error!("error: missing property '{}'", $prop_name);
                 std::process::exit(1);
             }
             _ => {
                 print_error!(
-                    "error: json value associated with {} property has incorrect type",
+                    "error: the value associated with '{}' has an incorrect type",
                     $prop_name
                 );
                 std::process::exit(1);
@@ -78,7 +78,7 @@ macro_rules! get_mut_prop_or_exit {
             }
             _ => {
                 print_error!(
-                    "error: json value associated with {} property has incorrect type",
+                    "error: the value associated with '{}' has an incorrect type",
                     $prop_name
                 );
                 std::process::exit(1);
@@ -93,7 +93,7 @@ pub fn if_todo_exists(f: impl FnOnce() -> ()) {
     if exists {
         f();
     } else {
-        print_error!("error: there is no .todo file");
+        print_error!("error: there is no {} file", TODO_FILE_NAME);
     }
 }
 
@@ -101,7 +101,7 @@ pub fn if_todo_not_exists(f: impl FnOnce() -> ()) {
     let exists = Path::new(TODO_FILE_NAME).exists();
 
     if exists {
-        print_error!("error: .todo file exists already");
+        print_error!("error: {} file exists already", TODO_FILE_NAME);
     } else {
         f();
     }

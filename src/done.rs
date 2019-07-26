@@ -9,6 +9,6 @@ pub fn done(id: &str) {
         tasks[id][STATUS] = JsonValue::String(String::from(DONE));
         write_json_to_file_or_err!(tasks, TODO_FILE_NAME);
     } else {
-        print_error!("error: no task with {}, id", id);
+        print_error!("error: no task with given id [{}]", id);
     }
 }

@@ -50,7 +50,7 @@ fn format_task_title(task: &JsonValue) -> String {
         UNDONE => title.bright_yellow().bold(),
         DISCARDED => title.bright_red().bold(),
         status => {
-            print_error!("error: {} is an indvalid status", status);
+            print_error!("error: '{}' is an indvalid status", status);
 
             process::exit(1);
         }

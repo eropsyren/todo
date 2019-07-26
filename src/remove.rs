@@ -13,11 +13,11 @@ pub fn remove(id: &str) {
             tasks.remove(id);
         }
         s @ UNDONE => {
-            print_error!("error: cannot remove a {} task", s);
+            print_error!("error: cannot remove a '{}' task", s);
             process::exit(1);
         }
         s => {
-            print_error!("error: task has unvalid status {}", s);
+            print_error!("error: '{}' is an indvalid status", s);
             process::exit(1);
         }
     }
