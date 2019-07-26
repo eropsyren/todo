@@ -10,7 +10,7 @@ mod init;
 mod list;
 mod remove;
 
-use clap::{App, Arg, SubCommand, AppSettings};
+use clap::{App, AppSettings, Arg, SubCommand};
 
 fn main() {
     let matches = App::new(clap::crate_name!())
