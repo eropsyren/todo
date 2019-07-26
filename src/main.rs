@@ -15,7 +15,7 @@ use clap::{App, AppSettings, Arg, SubCommand};
 fn main() {
     let matches = App::new(clap::crate_name!())
         .version(clap::crate_version!())
-        .setting(AppSettings::ArgRequiredElseHelp)
+        .settings(&[AppSettings::ArgRequiredElseHelp, AppSettings::ColoredHelp])
         .subcommand(
             SubCommand::with_name("init").about("Initializes todo list in the current directory"),
         )
