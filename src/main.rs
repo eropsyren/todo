@@ -1,6 +1,7 @@
 #[macro_use]
 mod utils;
 mod add;
+mod clear;
 mod constants;
 mod discard;
 mod done;
@@ -103,6 +104,7 @@ fn main() {
                         .required(true),
                 ),
         )
+        .subcommand(SubCommand::with_name("clear").about("Clears all done tasks"))
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("init") {
@@ -172,5 +174,9 @@ fn main() {
 
             utils::if_todo_exists(f);
         }
+    }
+
+    if let Some(_) = matches.subcommand_matches("clear") {
+        utils::if_todo_exists(clear::clear);
     }
 }
