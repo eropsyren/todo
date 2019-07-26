@@ -87,7 +87,7 @@ fn main() {
                 ),
         )
         .subcommand(
-            SubCommand::with_name("remove").about("Remove a task").arg(
+            SubCommand::with_name("remove").about("Removes a task").arg(
                 Arg::with_name("id")
                     .value_name("ID")
                     .help("Task's id to be marked as discarded")
@@ -96,7 +96,7 @@ fn main() {
         )
         .subcommand(
             SubCommand::with_name("edit")
-                .about("Edit a task description")
+                .about("Edit sa task description")
                 .arg(
                     Arg::with_name("id")
                         .value_name("ID")
