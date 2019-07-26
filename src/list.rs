@@ -13,7 +13,7 @@ pub fn list(is_long: bool, filter: Option<&str>) {
             get_prop_or_exit!(task, STATUS, JsonValue::Short, JsonValue::String).to_string();
 
         if matches_filter(task_status.as_str(), filter) {
-            if is_long {
+            if !is_long {
                 id = "-->";
             }
 
