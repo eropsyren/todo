@@ -96,7 +96,7 @@ fn main() {
         )
         .subcommand(
             SubCommand::with_name("edit")
-                .about("Edit sa task description")
+                .about("Edits a task description")
                 .arg(
                     Arg::with_name("id")
                         .value_name("ID")
