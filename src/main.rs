@@ -55,6 +55,14 @@ fn main() {
                         .value_name("ID")
                         .help("List the task with the given ID")
                         .takes_value(true),
+                )
+                .arg(
+                    Arg::with_name("filter")
+                        .short("f")
+                        .long("filter")
+                        .value_name("done | undone | discarded")
+                        .help("List all tasks with the given tag")
+                        .takes_value(true),
                 ),
         )
         .subcommand(
@@ -127,7 +135,8 @@ fn main() {
             utils::if_todo_exists(f);
         } else {
             let is_long = matches.is_present("long");
-            let f = || list::list(is_long);
+            let filter = matches.value_of("filter");
+            let f = || list::list(is_long, filter);
 
             utils::if_todo_exists(f);
         }
