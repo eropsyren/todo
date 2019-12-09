@@ -1,2 +1,2 @@
 # todo
-todo terminal application written in rust
+todo terminal application written in go
